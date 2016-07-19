@@ -218,6 +218,8 @@ dependencies/
 
 # Binary output
 *.out
+lgemu.exe
+lgemu
 
 # Eclipse
 *.project
