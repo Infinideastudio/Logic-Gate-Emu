@@ -2,7 +2,7 @@
 
 | 名称           | 参数              | 返回值                      | 描述               | 实现   |
 | ------------ | --------------- | ------------------------ | ---------------- | ---- |
-| loginbytoken | token           | success,token,score      | 登录               |      |
+| loginbytoken | token           | success,username,score   | 登录               |      |
 | register     | username        | token                    | 使用用户名新建一个账户      |      |
 | bindtoken    | token, password | success                  | 使token关联password |      |
 | findtoken    | password        | token                    | 用password找回token |      |
