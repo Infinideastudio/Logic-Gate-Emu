@@ -1,31 +1,34 @@
-var log = function(msg) {
-	document.write("<p style=\"font-family:Consolas, 'Courier New', Courier, monospace;\">"+ msg + "</p>");
-};
+callbacks = {}
 
 var Socket = function(serverurl, callback){
 	this.ws = new WebSocket('ws://'+serverurl);
 	this.ws.onopen = function(e) {
-		log("Connected.");
 		callback();
+		console.log("连接成功");
 	};
 
 	this.ws.onclose = function(e) {
-		log("Disconnected");
+		console.log("连接被关闭");
 	};
 
 	this.ws.onmessage = function(e) {
-		log("received: " + e.data);
-	};
-
-	this.ws.onerror = function(e) {
-		log('error: ' + e.data);
-	};
+		var obj = JSON.parse(e.data);
+		var cb = callbacks[obj[0]];
+		if(cb) cb(obj[1]);
+	}
 };
+
 Socket.prototype.send=function(type, args) {
-	var data={};
-	data.type=type;
-	data.data=args;
-	data.timestamp=new Date().getTime();
+	var data=[];
+	data[0]=type;
+	data[1]=args;
 	this.ws.send(JSON.stringify(data));
-	log('send: '+JSON.stringify(data));
 }
+
+callbacks.serverinfo = function(data){
+	byid("serverinfo").innerHTML = "玩家人数：" + data.nplayer.toString() + "/" + data.maxplayer.toString();
+	byid("loginusername").disabled = false;
+	byid("loginusername").value = "";
+	byid("loginusername").focus();
+}
+

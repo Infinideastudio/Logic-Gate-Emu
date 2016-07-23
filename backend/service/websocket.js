@@ -1,6 +1,6 @@
 var http = require("http"),
 	WebSocket = require("faye-websocket"),
-	game = require("../game.js");
+	player = require("../player.js").player;
 
 var sender = function(data){
 	this.wssocket.send(data);
@@ -12,11 +12,12 @@ exports.bind = function(port){
 	server.on("upgrade", function(request, socket, body){
 		if (WebSocket.isWebSocket(request)){
 			var ws = new WebSocket(request, socket, body);
-			var player = new game.player(sender,"websocket");
-			player.wssocket = ws;
-
+			var p = new player(sender,"websocket");
+			p.wssocket = ws;
+			p.connected();
+			
 			ws.on("message", function(event){
-				player.recive(event.data);
+				p.recive(event.data);
 			});
 		}
 	});

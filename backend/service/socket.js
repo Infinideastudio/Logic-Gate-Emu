@@ -1,5 +1,5 @@
 var net = require("net"),
-	game = require("../game.js");
+	player = require("../player.js").player;
 
 var sender = function(data){
 	this.ssocket.write(data);
@@ -7,11 +7,12 @@ var sender = function(data){
 
 exports.bind = function(port){
 	var server = net.createServer(function(s){
-		var player = new game.player(sender,"socket");
-		player.ssocket = s;
+		var p = new player(sender,"socket");
+		p.ssocket = s;
+		p.connected();
 		
 		s.on('data',function(data){
-			player.recive(data)
+			p.recive(data);
 		});
 	});
 	server.listen(port);

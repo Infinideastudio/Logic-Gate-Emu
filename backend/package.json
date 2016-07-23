@@ -1,0 +1,15 @@
+{
+  "name": "lgemu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "faye-websocket": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Infinideas",
+  "license": "GPL-3.0"
+}

@@ -1,21 +1,9 @@
-var player = function(sender,conntype){
-	this.sender = sender;
-	this.conntype = conntype; //连接类型(websocket,socket)
-};
-exports.player = player;
+var game = {};
+exports.game = game;
+var callbacks = {};
+var players = [];
 
-player.prototype.send = function(obj){
-	this.sender(JSON.stringify(obj));
-};
-
-player.prototype.recive = function(data){
-	try{
-		var obj = JSON.parse(data);
-	}catch(e){
-		return;
-	}
-	var ret = {};
-	ret.t = "echo";
-	ret.json = obj
-	this.send(ret);
+game.playerConnected = function(p){
+	p.send("serverinfo",{nplayer : 0,maxplayer : 20});
 }
+
