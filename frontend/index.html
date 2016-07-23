@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>[Logic Gate Emu] 逻辑门模拟器</title>
 </head>
 
@@ -21,9 +22,10 @@
 		ps2.chrome大法好<br/>
 	</p>
 
-	<div id="serverinfo">玩家人数：?/?</div>
+	<div id="serverinfo">玩家人数：?</div>
 
 	<div id="loginbox">
+	<!-- TODO: 先用cookie里的token进行登录(如果有)，如果失败则显示文本框 -->
 		用户名：<input id="loginusername" disabled=true value="连接中..."/><button>登陆</button>
 	</div>
 </div>

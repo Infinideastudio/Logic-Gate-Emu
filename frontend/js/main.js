@@ -1,4 +1,4 @@
-function byid(id){
+let getbyid=function(id){
 	return document.getElementById(id);
 }
 

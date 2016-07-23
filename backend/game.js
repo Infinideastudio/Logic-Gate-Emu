@@ -4,6 +4,5 @@ var callbacks = {};
 var players = [];
 
 game.playerConnected = function(p){
-	p.send("serverinfo",{nplayer : 0,maxplayer : 20});
+	p.send("serverinfo",{nplayer : 0,});
 }
-

@@ -1,34 +1,38 @@
 callbacks = {}
 
+let log=function(msg){
+	console.log(msg);
+}
+
 var Socket = function(serverurl, callback){
 	this.ws = new WebSocket('ws://'+serverurl);
 	this.ws.onopen = function(e) {
 		callback();
-		console.log("连接成功");
+		log("连接成功");
 	};
 
 	this.ws.onclose = function(e) {
-		console.log("连接被关闭");
+		log("连接被关闭");
 	};
 
 	this.ws.onmessage = function(e) {
 		var obj = JSON.parse(e.data);
-		var cb = callbacks[obj[0]];
-		if(cb) cb(obj[1]);
+		var callback = callbacks[obj[0]]; //obj[0]: type
+		if(callback) callback(obj[1]);  //obj[1]: args
+		log("recevied:" + JSON.stringify(obj));
 	}
 };
 
 Socket.prototype.send=function(type, args) {
-	var data=[];
-	data[0]=type;
-	data[1]=args;
+	var data=[type, args];
 	this.ws.send(JSON.stringify(data));
+	log("sent:" + JSON.stringify(data));
 }
 
 callbacks.serverinfo = function(data){
-	byid("serverinfo").innerHTML = "玩家人数：" + data.nplayer.toString() + "/" + data.maxplayer.toString();
-	byid("loginusername").disabled = false;
-	byid("loginusername").value = "";
-	byid("loginusername").focus();
+	getbyid("serverinfo").innerHTML = "玩家人数：" + data.nplayer.toString();
+	getbyid("loginusername").disabled = false;
+	getbyid("loginusername").value = "";
+	getbyid("loginusername").focus();
 }
 
