@@ -1,0 +1,31 @@
+<html>
+<body>
+<script>
+var wsServer = 'ws://localhost:7999';
+var ws = new WebSocket(wsServer);
+
+var sendMessage = function(msg) {
+    ws.send(msg);
+    console.log("send: " + msg);
+};
+
+ws.onopen = function(e) {
+    console.log("Connected.");
+    sendMessage("hello");
+};
+
+ws.onclose = function(e) {
+    console.log("Disconnected");
+};
+
+ws.onmessage = function(e) {
+    console.log("received: " + e.data);
+    ws.close();
+};
+
+ws.onerror = function(e) {
+    console.log('error: ' + e.data);
+};
+</script>
+</body>
+</html>
