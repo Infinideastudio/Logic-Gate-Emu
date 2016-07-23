@@ -1,6 +1,6 @@
 callbacks = {}
 
-let log=function(msg){
+var log=function(msg){
 	console.log(msg);
 }
 
