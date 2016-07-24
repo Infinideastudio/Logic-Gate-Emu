@@ -31,8 +31,7 @@ Socket.prototype.send=function(type, args) {
 
 callbacks.serverinfo = function(data){
 	getbyid("serverinfo").innerHTML = "玩家人数：" + data.nplayer.toString();
-	getbyid("loginusername").disabled = false;
-	getbyid("loginusername").value = "";
-	getbyid("loginusername").focus();
 }
-
+callbacks.loginbytokenret = function(data){
+	getbyid("loginusername").value = data.username;
+}

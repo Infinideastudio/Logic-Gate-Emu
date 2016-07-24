@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<div id="login">
+<div id="loginbox">
 	<h1>
 		Logic Gate Emulator<br/>
 		逻辑门模拟器
@@ -23,15 +23,16 @@
 		输入值可能是多位二进制，这时候需要对每一位执行逻辑计算<br/>
 	</p>
 
-	<div id="serverinfo">玩家人数：?</div>
+	<div id="serverinfo">正在连接到服务器……</div>
 
 	<div id="loginbox">
 	<!-- TODO: 先用cookie里的token进行登录(如果有)，如果失败则显示文本框 -->
-		用户名：<input id="loginusername" disabled=true value="连接中..."/><button>登陆</button>
+		用户名：<input id="loginusername" disabled="true" value=""/><button id="login">登陆</button>
 	</div>
 </div>
-
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
 <script type="text/javascript" src="js/settings.js"></script>
+<script type="text/javascript" src="js/cookie.js"></script>
 <script type="text/javascript" src="js/socket.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 
