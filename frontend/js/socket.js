@@ -1,9 +1,5 @@
 callbacks = {}
 
-var log=function(msg){
-	console.log(msg);
-}
-
 var Socket = function(serverurl, callback){
 	this.ws = new WebSocket('ws://'+serverurl);
 	this.ws.onopen = function(e) {
@@ -27,11 +23,4 @@ Socket.prototype.send=function(type, args) {
 	var data=[type, args];
 	this.ws.send(JSON.stringify(data));
 	log("sent:" + JSON.stringify(data));
-}
-
-callbacks.serverinfo = function(data){
-	getbyid("serverinfo").innerHTML = "玩家人数：" + data.nplayer.toString();
-}
-callbacks.loginbytokenret = function(data){
-	getbyid("loginusername").value = data.username;
 }
