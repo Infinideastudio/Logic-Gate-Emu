@@ -12,9 +12,13 @@ player.prototype.send = function(type,obj){
 };
 
 player.prototype.recive = function(data){
-	var obj = JSON.parse(data);
-	var callback = callbacks[obj[0]]; //obj[0]: type
-	if(callback) callback(this, obj[1]);  //obj[1]: args
+	try{
+		var obj = JSON.parse(data);
+		var callback = callbacks[obj[0]]; //obj[0]: type
+		if(callback) callback(this, obj[1]);  //obj[1]: args
+	}catch(e){
+		return;
+	}
 }
 
 player.prototype.connected = function(){
