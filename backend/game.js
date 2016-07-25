@@ -38,10 +38,8 @@ callbacks.getscore = function(p,data){
 		});
 	}else{
 		//生成一个token
-		//var tok=sha256(database.tokenNum.toString());
 		var tok=sha256((new Date().getTime()*1000+Math.random()*1000).toString());
 		database.addToken(tok);
-		database.tokenNum++;
 		p.send("getscore",{'success':true, 'token': tok, 'score': 0});
 	}
 }

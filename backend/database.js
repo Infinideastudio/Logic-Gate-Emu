@@ -9,12 +9,6 @@ database.open=function(filename){
 			database.db.run("CREATE TABLE scores (token TEXT, score INT)");
 		});
 	}
-	/*database.db.serialize(function() {
-		database.db.get("select count(*) from scores", function(err, res){
-			database.tokenNum=res['count(*)'];
-			console.log("读取到token的数量: " + database.tokenNum);
-		});
-	});*/
 };
 
 database.addToken=function(token){
