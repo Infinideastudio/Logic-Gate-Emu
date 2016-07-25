@@ -14,6 +14,9 @@ exports.bind = function(port){
 		s.on('data',function(data){
 			p.recive(data);
 		});
+		s.on('end', function() {
+			p.disconnected();
+		});
 	});
 	server.listen(port);
 }

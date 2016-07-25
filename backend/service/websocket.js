@@ -19,6 +19,9 @@ exports.bind = function(port){
 			ws.on("message", function(event){
 				p.recive(event.data);
 			});
+			ws.on("close", function(event){
+				p.disconnected();
+			});
 		}
 	});
 	server.listen(port);
