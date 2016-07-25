@@ -41,3 +41,30 @@ number roomid
 number score
 
 ```
+
+## 协议参数与结构补充
+
+```
+object player{
+    string name
+    number score
+}
+
+object roominfo{
+    string name
+    string map
+    player[] players
+    status stat
+}
+
+enum status{
+    1 = waiting
+    2 = playing
+}
+
+bool success
+string token
+number roomid
+number score
+
+```

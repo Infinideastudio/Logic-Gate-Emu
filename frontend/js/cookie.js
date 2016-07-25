@@ -14,4 +14,4 @@ function setCookie(name,value){
 	var exp = new Date();  
 	exp.setTime(exp.getTime() + 30*12*24*60*60*1000);  
 	document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();  
-}  
+}

@@ -5,7 +5,7 @@ var getbyid=function(id){
 var socket = new Socket(serverUrl+":"+serverPort, function(){
 	//注册回调函数
 	$("#login").click(function(){
-		socket.send("setname",{"name":$("#loginusername").val()});
+		socket.send("login",{"name":$("#loginusername").val()});
 		token=getCookie("token");
 		if(token!=""){
 			//获得分数
@@ -18,15 +18,3 @@ var socket = new Socket(serverUrl+":"+serverPort, function(){
 });
 
 getbyid("loginusername").focus();
-
-callbacks.serverinfo = function(data){
-	getbyid("serverinfo").innerHTML = "玩家人数：" + data.nplayer.toString();
-}
-callbacks.getscoreret = function(data){
-	if(!data.success){
-		log("ERR: token不存在");
-	}else{
-		if(token==""){token=data.token;score=data.score;}
-		else score=data.score;
-	}
-}

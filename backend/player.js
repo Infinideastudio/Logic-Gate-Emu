@@ -1,10 +1,8 @@
 var game = require("./game.js").game;
 var callbacks = require("./game.js").callbacks;
-var globalConnid = 0;
 var player = function(sender,conntype){
 	this.sender = sender;
 	this.conntype = conntype; //连接类型(websocket,socket)
-	this.connid = globalConnid++;
 	this.name = "";
 };
 exports.player = player;

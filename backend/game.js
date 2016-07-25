@@ -1,23 +1,30 @@
 var game = {};
 exports.game = game;
 var callbacks = {};
+var config = require("./config.js").value;
+var playersNotLogon = [];
 var players = [];
 var database = require("./database.js").database;
 var sha256 = require("./sha256-min.js").hex_sha256;
 exports.callbacks = callbacks;
 
 game.playerConnected = function(p){
-	players.push(p);
-	p.send("serverinfo",{nplayer : players.length});
+	playersNotLogon.push(p);
+	p.logon = false;
+	p.send("serverinfo",{nplayer : players.length,maxplayer : config.maxplayer});
 }
 
 game.playerDisconnected = function(p){
-	for(var i=0;i<players.length;i++){
-		if(players[i].connid==p.connid) players.splice(i, 1);
+	if(p.logon){
+		var index = players.indexOf(p);
+		if(index) players.splice(index,1);
+	}else{
+		var index = playersNotLogon.indexOf(p);
+		if(index) playersNotLogon.splice(index,1);
 	}
 }
 
-callbacks.setname = function(p,data){
+callbacks.login = function(p,data){
 	p.name=data.name;
 }
 
