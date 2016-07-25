@@ -3,4 +3,5 @@ exports.value = {
 	//关闭设为 -1 
 	bindSocket:7998,
 	bindWebsocket:7999,
+	databaseName: "data.db"
 }

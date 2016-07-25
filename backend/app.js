@@ -1,10 +1,13 @@
 var config = require("./config.js").value,
+	database = require("./database.js").database;
 	websocket = require("./service/websocket.js"),
 	socket = require("./service/socket.js"),
 	game = require("./game.js");
 
 console.log("Logic Gate Emulator 逻辑门模拟器");
 console.time("启动时间");
+
+database.open(config.databaseName);
 
 var bound = false;
 

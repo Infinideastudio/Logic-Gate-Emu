@@ -11,6 +11,7 @@ var socket = new Socket(serverUrl+":"+serverPort, function(){
 			//获得分数
 			socket.send("getscore",{"token":token});
 		}else{
+			//获得token
 			socket.send("getscore",{});
 		}
 	});
@@ -23,9 +24,9 @@ callbacks.serverinfo = function(data){
 }
 callbacks.getscoreret = function(data){
 	if(!data.success){
-		log("token不存在");
+		log("ERR: token不存在");
 	}else{
-		if(token==="") token=data.token;
+		if(token==""){token=data.token;score=data.score;}
 		else score=data.score;
 	}
 }
