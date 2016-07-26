@@ -1,11 +1,13 @@
+var database = require("./database.js").database
+	sha256 = require("./sha256-min.js").hex_sha256,
+	config = require("./config.js").value;
+
 var game = {};
-exports.game = game;
 var callbacks = {};
-var config = require("./config.js").value;
 var playersNotLogon = [];
 var players = [];
-var database = require("./database.js").database;
-var sha256 = require("./sha256-min.js").hex_sha256;
+
+exports.game = game;
 exports.callbacks = callbacks;
 
 game.playerConnected = function(p){

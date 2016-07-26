@@ -1,5 +1,5 @@
 var config = require("./config.js").value,
-	database = require("./database.js").database;
+	database = require("./database.js").database,
 	websocket = require("./service/websocket.js"),
 	socket = require("./service/socket.js"),
 	game = require("./game.js");

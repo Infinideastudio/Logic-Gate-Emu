@@ -1,5 +1,5 @@
-var game = require("./game.js").game;
-var callbacks = require("./game.js").callbacks;
+var game = require("./game.js").game,
+	callbacks = require("./game.js").callbacks;
 var player = function(sender,conntype){
 	this.sender = sender;
 	this.conntype = conntype; //连接类型(websocket,socket)
