@@ -35,11 +35,12 @@ callbacks.getscore = function(p,data){
 			var ret={'token': data.token, 'score':score};
 			if(score==-1) ret.success=false;
 			else ret.success=true;
+			p.send("getscoreret",ret);
 		});
 	}else{
 		//生成一个token
 		var tok=sha256((new Date().getTime()*1000+Math.random()*1000).toString());
 		database.addToken(tok);
-		p.send("getscore",{'success':true, 'token': tok, 'score': 0});
+		p.send("getscoreret",{'success':true, 'token': tok, 'score': 0});
 	}
 }
