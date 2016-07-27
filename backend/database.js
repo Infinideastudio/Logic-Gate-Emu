@@ -22,8 +22,8 @@ database.addToken = function(token){
 //callback: function(score). score will be -1 if the token does not exist.
 database.getScoreByToken = function(token,callback){
 	database.db.serialize(function() {	 
-	var getToken = database.db.prepare("SELECT score FROM scores WHERE token=?;")
-	  getToken.get(token, function(err, row) {
+	var getToken = database.db.prepare("SELECT score FROM scores WHERE token=?;");
+	getToken.get(token, function(err, row) {
 		if(row){
 			callback(row.score);
 		}else{
