@@ -11,19 +11,18 @@ database.open = function(filename){
 	}
 };
 
+var addToken = database.db.prepare("INSERT INTO scores VALUES (?, 0);");
 database.addToken = function(token){
-	database.db.serialize(function() {	 
-		var addToken = database.db.prepare("INSERT INTO scores VALUES (?, 0);");
+	database.db.serialize(function() {
 		addToken.run(token);
-		addToken.finalize();
 	});
 };
 
 //callback: function(score). score will be -1 if the token does not exist.
+var getToken = database.db.prepare("SELECT score FROM scores WHERE token=?;")
 database.getScoreByToken = function(token,callback){
 	database.db.serialize(function() {	 
-	var getToken = database.db.prepare("SELECT score FROM scores WHERE token=?;");
-	getToken.get(token, function(err, row) {
+	  getToken.get(token, function(err, row) {
 		if(row){
 			callback(row.score);
 		}else{
