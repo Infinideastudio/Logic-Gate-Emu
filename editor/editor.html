@@ -1,0 +1,169 @@
+<html>
+
+<head>
+<style>
+html{
+font-family:Consolas;
+}
+#inp{
+float:left;
+height:100%;
+width:20%;
+}
+#oup{
+float:left;
+height:100%;
+width:20%;
+}
+#dra{
+float:left;
+height:100%;
+width:58%;
+}
+</style>
+<script>
+function beginWith(str,beg){
+	return str.substr(0, beg.length)==beg;
+}
+function getById(id){
+	return document.getElementById(id);
+}
+function replaceByArray(text, arrsrc, arrdst){
+	if(arrsrc.length!=arrdst.length)
+		throw "Numbers of inputs or outputs is not the same! ("+arrsrc.length+" and "+arrdst.length+")\n";
+	for(let i=0;i!=arrsrc.length;++i){
+		if(text==arrsrc[i]) text=arrdst[i];
+	}
+	return text;
+}
+function use(text,modules,use_in,use_out,module_in,module_out){
+	var lines=text.split("\n");
+	var ret="";
+	var err="";
+	
+	for (let i=0;i<lines.length;i++){
+		var str=lines[i];
+		if(str=="") continue;
+		if(beginWith(str,"use ")){ //use MIX-AND [["IN1","IN2"],["OUT1","OUT2"]]
+			var parts=str.split(" ");
+			var module=modules[parts[1]];
+			if(!module) {err+="Module "+parts[1]+" is not found at line "+(i+1)+"\n";continue;}
+			var json="";
+			for(let j=2;j<parts.length;j++) json+=parts[j];
+			try{var obj=JSON.parse(json);}catch(e){err+=e+", line: "+(i+1)+"\n"; continue;}
+			for(let j=0;j!=obj[0].length;++j){
+				obj[0][j]=replaceByArray(obj[0][j], module_in, use_in);
+				obj[0][j]=replaceByArray(obj[0][j], module_out, use_out);
+			}
+			for(let j=0;j!=obj[1].length;++j){
+				obj[1][j]=replaceByArray(obj[1][j], module_in, use_in);
+				obj[1][j]=replaceByArray(obj[1][j], module_out, use_out);
+			}
+			ret+=use(module.def, modules, obj[0], obj[1], module.inputs, module.outputs);
+			continue;
+		}
+		try{var obj=JSON.parse(str);}catch(e){err+=e+", line: "+(i+1)+"\n"; continue;}
+		obj[0]=replaceByArray(obj[0], module_in, use_in);
+		obj[0]=replaceByArray(obj[0], module_out, use_out);
+		for(let j=0;j!=obj[2].length;++j){
+			obj[2][j]=replaceByArray(obj[2][j], module_in, use_in);
+			obj[2][j]=replaceByArray(obj[2][j], module_out, use_out);
+		}
+		ret+=JSON.stringify(obj)+"\n";
+	}
+	if(err!="") throw err;
+	return ret;
+}
+
+function compile(text){
+	var lines=text.split("\n");
+	var ret="";
+	
+	var moduledef=false;
+	var modulenow="";
+	
+	var inputs=[];
+	var outputs=[];
+	
+	var modules={};
+	
+	var err="";
+	
+	for (let i=0;i<lines.length;i++){
+		var str=lines[i];
+		if(str==""||beginWith(str,"//")) continue;
+		if(beginWith(str,"module ")){ //module xxx
+			moduledef=true;
+			modulenow=str.substr(7);
+			modules[modulenow]={};
+			modules[modulenow].def="";
+			continue;
+		}
+		if(str=="end module"){ //end module
+			if(!moduledef) {err+="Unexcepted \"module end\" at line "+(i+1)+"\n";continue;}
+			moduledef=false;
+			continue;
+		}
+		if(beginWith(str,"inputs ")) {
+			json=str.substr(7);
+			try{var obj=JSON.parse(json);}catch(e){err+=e+", line: "+(i+1)+"\n"; continue;}
+			if(moduledef) modules[modulenow].inputs=obj;
+			else inputs=obj;
+			continue;
+		}
+		if(beginWith(str,"outputs ")) {
+			json=str.substr(8);
+			try{var obj=JSON.parse(json);}catch(e){err+=e+", line: "+(i+1)+"\n"; continue;}
+			if(moduledef) modules[modulenow].outputs=obj;
+			else outputs=obj;
+			continue;
+		}
+		if(beginWith(str,"use ")){ //use MIX-AND [["IN1","IN2"],["OUT1","OUT2"]]
+			if(moduledef){
+				modules[modulenow].def+=str+"\n";
+				continue;
+			}
+			var parts=str.split(" ");
+			var module=modules[parts[1]];
+			if(!module) {err+="Module "+parts[1]+" is not found at line "+(i+1)+"\n";continue;}
+			var json="";
+			for(j=2;j<parts.length;j++) json+=parts[j];
+			try{var obj=JSON.parse(json);}catch(e){err+=e+", line: "+(i+1)+"\n"; continue;}
+			try{
+				ret+=use(module.def, modules, obj[0], obj[1], module.inputs, module.outputs);
+			}catch(e){
+				err+="Error happened in \"use\" at line: "+(i+1)+"\n==============\n"+e+"==============\n";
+				continue;
+			}
+			continue;
+		}
+		
+
+		try{var obj=JSON.parse(str);}catch(e){err+=e+", line: "+(i+1)+"\n"; continue;}
+		
+		if(moduledef){
+			modules[modulenow].def+=JSON.stringify(obj)+"\n";
+		}else{
+			ret+=JSON.stringify(obj)+"\n";
+		}
+	}
+	return err==""?ret:err;
+}
+function draw(str){
+
+}
+</script>
+
+</head>
+
+<body>
+
+<textarea id="inp" oninput="getById('oup').value=compile(getById('inp').value,[]);draw(getById('oup').value);">
+</textarea>
+<textarea id="oup" readonly="true">
+</textarea>
+<canvas id="dra">
+</canvas>
+
+</body>
+</html>
